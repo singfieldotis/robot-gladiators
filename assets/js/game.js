@@ -33,51 +33,97 @@ var fight = function (enemyName) {
                 break;
             }
         }
-            //remove enemy's health by subtracting the amount set in the playerAttack variable
-            enemyHealth = enemyHealth - playerAttack;
-            console.log(
-                playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
-            );
+        //remove enemy's health by subtracting the amount set in the playerAttack variable
+        enemyHealth = enemyHealth - playerAttack;
+        console.log(
+            playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
+        );
 
-            // check enemy's health
-            if (enemyHealth <= 0) {
-                window.alert(enemyName + " has died!");
+        // check enemy's health
+        if (enemyHealth <= 0) {
+            window.alert(enemyName + " has died!");
 
-                // award player money for winning
-                playerMoney - playerMoney + 20;
+            // award player money for winning
+            playerMoney - playerMoney + 20;
 
-                //leave while() loop since enemy is dead
-                break;
-            } else {
-                window.alert(enemyName + " still has " + enemyHealth + " health left.");
-            }
-
-            // remove player's health by subtracting the amount set in the enemyAttack variable
-            playerHealth = playerHealth - enemyAttack;
-            console.log(
-                enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
-            );
-
-            // check player's health
-            if (playerHealth <= 0) {
-                window.alert(playerName + " has died!");
-                break;
-            } else {
-                window.alert(playerName + " still has " + playerHealth + " health left.");
-            }
+            //leave while() loop since enemy is dead
+            break;
+        } else {
+            window.alert(enemyName + " still has " + enemyHealth + " health left.");
         }
-    };
 
-for (var i = 0; i < enemyNames.length; i++) {
-    if (playerHealth > 0) {
-        window.alert("Welcome to Robot Gladioators! Round " + ( i + 1 ) );
-    
-    var pickedEnemyName = enemyNames[i];
-    enemyHealth = 50;
-    debugger;
-    fight(pickedEnemyName);
-    } else {
-        window.alert("You have lost you robot in battle! Game Over!");
-        break;
+        // remove player's health by subtracting the amount set in the enemyAttack variable
+        playerHealth = playerHealth - enemyAttack;
+        console.log(
+            enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
+        );
+
+        // check player's health
+        if (playerHealth <= 0) {
+            window.alert(playerName + " has died!");
+            break;
+        } else {
+            window.alert(playerName + " still has " + playerHealth + " health left.");
+        }
     }
-}
+};
+
+// Wrap the game logic in a startGame() function
+var startGame = function () {
+    // reset player stats
+    playerHealth = 100;
+    playerAttack = 10;
+    playerMoney = 10;
+
+    for (var i = 0; i < enemyNames.length; i++) {
+        if (playerHealth > 0) {
+            window.alert("Welcome to Robot Gladioators! Round " + (i + 1));
+
+            var pickedEnemyName = enemyNames[i];
+
+            enemyHealth = 50;
+
+            fight(pickedEnemyName);
+        } 
+        else {
+            window.alert("You have lost you robot in battle! Game Over!");
+            break;
+        }
+    }
+    endGame();
+};
+
+
+// When the player is defeater or there are no more enemies, call an endGame() function that:
+//      * Alerts the players total stats
+//      * Asks the player if they want to play again
+//      * If yes, call startGame() to restart the game
+var endGame = function() {
+    if (playerHealth > 0) {
+        window.alert("Great job, you survived the game! You now have a score of " + playerMoney + ".");
+    }
+    else{
+        window.alert("You've lost your robot in battle.");
+    }
+
+    var playAgainConfirm = window.confirm("Would you like to play agian?");
+
+    if(playAgainConfirm) {
+        startGame();
+    }
+    else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+    }
+};
+
+// After the player skips or defeats and enemy (and there are still more robots to fight):
+//      * Ask the player if they want to 'shop'
+//      * If no, continue as normal
+//      * If yes, call the shop() function
+//      * In the shop() function ask the player if they want to "refill" health, "upgrade" attack, or "leave" the shop
+//      * If refill, subtract money points from player to increase health
+//      * If upgrade, subtract money points from player and increase attack power
+//      * If leave, alert goodbye and exit the function
+//      * If any other invalid option, call shop() again
+
+startGame();
