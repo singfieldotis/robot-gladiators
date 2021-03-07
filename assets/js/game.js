@@ -32,8 +32,14 @@ var fightOrSkip = function() {
 };
 
 var fight = function (enemy) {
+    var isPlayerTurn = true;
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
+
     while (enemy.health > 0 && playerInfo.health > 0) {
-        // Ask the player if they'd like to run or fight
+       if(isPlayerTurn) {
+
         if (fightOrSkip()) {
             //if true, leave fight by breaking loop
             break;
@@ -53,13 +59,14 @@ var fight = function (enemy) {
             window.alert(enemy.name + " has died!");
 
             // award player money for winning
-            playerInfo.money - playerInfo.money + 20;
+            playerInfo.money = playerInfo.money + 20;
 
             //leave while() loop since enemy is dead
             break;
         } else {
             window.alert(enemy.name + " still has " + enemy.health + " health left.");
         }
+        } else {
 
         // remove player's health by subtracting the amount set in the enemy.attack variable
         var damage = randomNumber(enemy.attack - 3, enemy.attack);
@@ -78,6 +85,8 @@ var fight = function (enemy) {
             window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
         }
     }
+    isPlayerTurn = !isPlayerTurn;
+       }
 };
 
 // Wrap the game logic in a startGame() function
